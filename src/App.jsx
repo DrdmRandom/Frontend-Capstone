@@ -38,8 +38,15 @@ function App() {
 
       if (!isMounted) return;
 
+      const hasReachableApi =
+        healthResult.status === 'fulfilled' ||
+        regionsResult.status === 'fulfilled' ||
+        logsResult.status === 'fulfilled';
+
       if (healthResult.status === 'fulfilled') {
         setHealth({ state: 'healthy', label: 'Backend healthy' });
+      } else if (hasReachableApi) {
+        setHealth({ state: 'healthy', label: 'Backend connected' });
       } else {
         setHealth({ state: 'degraded', label: 'Backend unavailable' });
       }
