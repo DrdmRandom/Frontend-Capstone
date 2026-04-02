@@ -58,25 +58,30 @@ const currentTimeMarkerPlugin = {
     const first = points[0];
     const last = points[points.length - 1];
 
-    if (now < first || now > last) return;
-
     let markerX = null;
+    let markerLabel = 'Current time';
 
-    for (let index = 0; index < points.length - 1; index += 1) {
-      const start = points[index];
-      const end = points[index + 1];
-
-      if (now >= start && now <= end) {
-        const startX = xScale.getPixelForValue(chart.data.labels[index], index);
-        const endX = xScale.getPixelForValue(chart.data.labels[index + 1], index + 1);
-        const ratio = end === start ? 0 : (now - start) / (end - start);
-        markerX = startX + (endX - startX) * ratio;
-        break;
-      }
+    if (now <= first) {
+      markerX = xScale.getPixelForTick(0);
+      markerLabel = 'Current time';
+    } else if (now >= last) {
+      markerX = xScale.getPixelForTick(points.length - 1);
+      markerLabel = 'Current time';
     }
 
-    if (markerX === null && now === last) {
-      markerX = xScale.getPixelForValue(chart.data.labels[points.length - 1], points.length - 1);
+    if (markerX === null) {
+      for (let index = 0; index < points.length - 1; index += 1) {
+        const start = points[index];
+        const end = points[index + 1];
+
+        if (now >= start && now <= end) {
+          const startX = xScale.getPixelForTick(index);
+          const endX = xScale.getPixelForTick(index + 1);
+          const ratio = end === start ? 0 : (now - start) / (end - start);
+          markerX = startX + (endX - startX) * ratio;
+          break;
+        }
+      }
     }
 
     if (markerX === null) return;
@@ -93,7 +98,7 @@ const currentTimeMarkerPlugin = {
     ctx.setLineDash([]);
     ctx.fillStyle = '#ef4444';
     ctx.font = '12px Inter, sans-serif';
-    ctx.fillText('Current time', markerX + 6, chartArea.top + 14);
+    ctx.fillText(markerLabel, markerX + 6, chartArea.top + 14);
     ctx.restore();
   },
 };
