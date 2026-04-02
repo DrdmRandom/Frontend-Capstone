@@ -249,7 +249,7 @@ function renderChart() {
   chart.data.datasets[0].hidden = false;
   chart.data.datasets[1].data = referenceValues;
   // chart.data.datasets[1].hidden = !toggleReference.checked;
-  chart.data.datasets[1].hidden = false;
+  chart.data.datasets[1].hidden = true;
   chart.options.plugins.currentTimeMarker.hours = hours;
   chart.update();
 }
