@@ -391,9 +391,11 @@ capacitySelect.addEventListener('change', () => {
   loadForecast(regionSelect.value);
 });
 
-// toggleReference.addEventListener('change', () => {
-//   renderChart();
-// });
+// if (toggleReference) {
+//   toggleReference.addEventListener('change', () => {
+//     renderChart();
+//   });
+// }
 
 setInterval(() => {
   if (currentForecast.hours.length) {
